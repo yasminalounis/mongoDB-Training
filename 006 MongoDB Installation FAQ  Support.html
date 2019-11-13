@@ -1,0 +1,16 @@
+<html>
+                <head>
+                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+                <title>006 MongoDB Installation FAQ  Support</title>
+                </head>
+                <body>
+                <div class="container">
+                <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <p class="lead"><p>Everything should go smooth when installing MongoDB but in case you're facing any issues, here are a couple of helpful hints + resources that should help you.</p><p><strong>1) Check the Official Docs</strong></p><p>It sounds cheap but the official docs are really good. If you're facing any issues or you're not sure about some step, check the official installation guide for your operating system and make sure you follow the instructions step-by-step.</p><p>Windows =&gt; <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/" rel="noopener noreferrer" target="_blank">https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/</a></p><p>macOS =&gt; <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/" rel="noopener noreferrer" target="_blank">https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/</a></p><p>Linux =&gt; <a href="https://docs.mongodb.com/manual/administration/install-on-linux/" rel="noopener noreferrer" target="_blank">https://docs.mongodb.com/manual/administration/install-on-linux/</a></p><p><strong>2) The Database Path</strong></p><p>MongoDB needs to store your database data somewhere - and it does so in real files. On Windows, these files are stored in a path which you define during installation (for the Windows service).</p><p>On macOS and Linux, MongoDB by default uses <code>/data/db</code> as the storage path. It also assumes a similar path (<code>C:\data\db</code>) on Windows when NOT using the MongoDB service (i.e. when manually executing the <code>mongod</code> command).</p><p>You can always change the path by running:</p><p><code>mongod --dbpath "my/new/path"</code> (on Windows, use backslashes + the drive name =&gt; <code>mongod --dbpath "C:\my\path"</code>).</p><p><strong>3) Permissions</strong></p><p>Make sure that MongoDB is allowed to write to the path you specified. If you're getting any permission errors, try running</p><p><code>sudo mongod</code></p><p>on macOS and Linux.</p><p>On Windows, run the command prompt as administrator (right click on the command prompt executable =&gt; "Run as administrator").</p></p>
+                </div>
+                </div>
+                </div>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+                </body>
+                </html>
