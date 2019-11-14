@@ -1,0 +1,85 @@
+sudo mongod
+mongo
+
+show dbs
+
+use contacts
+db.persons.insertOne({name: "max", age: 30, hobbies: ["sports", "books"]})
+db.persons.insertOne({name: "anna", age: 26, hobbies: ["sports", "yoga"]})
+db.persons.insertOne({name: "Amine", age: 45, absent: true, weight: 80]})
+db.persons.insertMany([{name: "mary", age: 23, hobbies: ["sports", "yoga"]}, {name: "bob", adress: {street: "rue de saint paule", zipcode: "02000"}}])
+
+Inserting
+db.persons.insert({name: "abed", age: 42})
+db.persons.insert([{name: "zahra", age: 23}, {name: "Monique", age: 68}])
+
+Ordering
+db.hobbies.insertMany([{_id:"sports", name: "Sports"},{_id:"cooking", name: "Cooking"},{_id:"cars", name: "Cars"}])
+db.hobbies.insertMany([{_id:"sports", name: "Sports"},{_id:"hunting", name: "Hunting Halouf"}, {ordred: false}])
+
+writeConcern
+db.persons.insertOne({name: "Ahmed", age: 31}, {writeConcern: {w:0}})
+db.persons.insertOne({name: "Mehdi", age: 31}, {writeConcern: {w:1}})
+db.persons.insertOne({name: "Mehdi", age: 31}, {writeConcern: {w:1, j: true, wtimeout: 20}})
+
+Importing data
+mongoimport tv-shows.json -d moviesData -c movies --jsonArray --drop
+
+Filtering
+use movies
+db.movies.find({name: "The Last Ship"}).pretty()
+db.movies.find({runtime: {$ne: 60}})
+db.movies.find({runtime: {$lt: 40}})
+db.movies.find({"rating.average": {$gt: 7}})
+db.movies.find({genres: "Drama"})
+db.movies.find({genres: {$all: ["Drama", "Comedy"]}})
+
+db.movies.find({runtime: {$in: [30, 42] }})
+db.movies.find({runtime: {$nin: [30, 42] }})
+db.movies.find({$or: [{"rating.average": {$gt: 9.3}}, {"rating.average": {$lt: 5}}]}).pretty()
+db.movies.find({$or: [{"rating.average": {$gt: 9.3}}, {"rating.average": {$lt: 5}}]}).count()
+db.movies.find({$nor: [{"rating.average": {$gt: 9.3}}, {"rating.average": {$lt: 5}}]}).count()
+db.movies.find({$and: [{"rating.average": {$gt: 9}}, {"genres": "Drama"}]}).count()
+
+db.movies.find({summary: {$regex: /musical/}})
+
+db.persons.find({weight: {$exists: true, $gt: 75}}).pretty()
+db.persons.find({hobbies: {$size: 3}}).pretty()
+
+Cursor
+db.movies.find().count()
+const dataCursor=db.movies.find()
+dataCursor.next()
+dataCursor.hasNext()
+dataCursor.forEach(doc=>{printjson(doc)})
+
+Sorting
+db.movies.find().sort({"rating.average": 1, runtime: -1}).pretty()
+db.movies.find().sort({"rating.average": 1, runtime: -1}).skip(100).limit(10)
+
+Projection
+db.movies.find({}, {name: 1, genres: 1, "rating.average": 1, _id: 0}).pretty()
+db.movies.find({genres: "Drama"}, {"genres.$": 1})
+db.movies.find({genres: "Drama"}, {genres: {$elemMatch: {$eq: "Horror"}}, name: 1}).pretty()
+db.movies.find({"rating.average": {$gt: 9}}, {genres: {$slice: 2, name: 1}).pretty()
+db.movies.find({"rating.average": {$gt: 9}}, {genres: {$slice: [1, 2], name: 1}).pretty()
+
+
+Updating
+mongoimport users.json -d users -c persons --jsonArray --drop
+use users
+db.persons.find(),.pretty()
+db.persons.updateOne({name: "Max"}, {$set: {hobbies: [{title:"Cooking", frequency: 5}, {title:"Sports", frequency: 5}]}})
+db.persons.updateMany({"hobbies.title": "sports" }, {$set: {isSporty: true}})
+
+db.persons.updateOne({name: "Max"}, {$inc: {age: 1}, $set: {isSporty: false}})
+db.persons.updateOne({isSporty: true}, {$unset: {phone: ""}})
+db.persons.updateMany({}, {$rename: {age: "totalAge"}})
+db.persons.updateMany({"hobbies.frequency": {$gt:2} }, {$set: {"hobbies.$.goodFrequency": true}})
+db.persons.updateOne({name: "Max"}, {$push: {hobbies: {title:"Yoga", frequency: 5}}})
+db.persons.updateOne({name: "Max"}, {$addToSet: {hobbies: {title:"Hunting", frequency: 1}}})
+db.persons.updateOne({name: "Max"}, {$addToSet: {hobbies: {title:"Hunting", frequency: 1}}})
+db.persons.updateOne({name: "Max"}, {$pull: {hobbies: {title:"Cooking"}}})
+db.persons.updateOne({name: "Chris"}, {$pop: {hobbies: 1}})
+
+
